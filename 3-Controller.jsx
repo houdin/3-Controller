@@ -1,4 +1,10 @@
-var proj = app.project;
+///////////////////////////////////////
+// DEVELOPED BY FXinstitut
+/////////////////////
+#include "3-Controller/lib/func.jsx"
+
+var scriptName = "3-Controller";
+
 var renderSet = "av_export";
 
 var file;
@@ -13,8 +19,6 @@ var compTxt;
 
 var openClass;
 var fileClass;
-var nomComp;
-
 
 var widthComp = 1920;
 var heightComp = 1080;
@@ -23,13 +27,9 @@ var fpsComp = 25;
 //----------- NEW FILE ------------------------
 
 
-#include "3-Controller/lib/func.jsx"
 
 
-
-//--------------------------------------------
-
-
+//-------------------------------------------
 
 //--------------------------------------------
 
@@ -59,27 +59,6 @@ function readTxt() {
 
     //setRead();
 
-
-    var code1 =
-        "var nom = \"" + nomInvite + "\";\
-eval(\"@JSXBIN@ES@2.0@MyBbyBn0ABJAnAXzBhQBfEXzFjTjQjMjJjUCfjzDjOjPjNDfRBFeBhAff0DzAEByB\")";
-    //nom.split(\" \")[0];
-    var code2 =
-        "var nom = \"" + nomInvite + "\";\
-eval(\"@JSXBIN@ES@2.0@MyBbyBn0ACJAnASzEjEjBjUjBByBEXzFjTjQjMjJjUCfjzDjOjPjNDfRBFeBhAffnftOBbyCn0ABJCnAFe0ACzChdhdEXzGjMjFjOjHjUjIFfVBfyBnndBODbyEn0ABJEnAXzBhRGfVBfyBACEXFfVBfyBnndCOFbyGn0ABJGnACzBhLHCHXGfVBfyBnneBhAXzBhSIfVBfyBnnACEXFfVBfyBnndDOHbyIn0ABJInACHCHCHCHXGfVBfyBnneBhAXIfVBfyBnnnneBhAXzBhTJfVBfyBnnACEXFfVBfyBnndEnABB40BiAABAzAKByB\")";
-
-    for (var i = 1; i <= proj.numItems; i++) {
-        if (proj.item(i).name === "NOM_invite" && proj.item(i) instanceof CompItem) {
-            compTxt = proj.item(i);
-            compTxt.openInViewer();
-            compTxt.layer(2).text.sourceText.expression = code1;
-            compTxt.layer(3).text.sourceText.expression = code2;
-            break;
-        } else if (i == proj.numItems) {
-            alert("La compositon \"NOM_invite\" n'esiste pas !");
-        }
-    }
-
 };
 
 //--------------------------------------
@@ -91,6 +70,7 @@ function toFileImport() {
     fileImportedSet(nom, "IMPORT IMAGE");
 }
 //-----------------------------
+
 
 
 //------------------------------------------------------------
