@@ -1,16 +1,5 @@
-// // TRIM FUNCTION-////////////////////////
-function trim(str) {
-    if (str != null) {
-        return str.replace(/^\s+/, '').replace(/\s+$/, '');
-    } else {
-        return false;
-    }
-}
-////////////////
-//// COMPARE NUMBER
-function numCompare(a, b) {
-    return a >= b ? true : false
-}
+var proj = app.project;
+
 
 //////////////////////////////////////////////////////
 ///// FILE IMPORTER
@@ -22,6 +11,38 @@ function fileImporter() {
     }
     return fileClass;
 }
+
+
+//--- FIND FOLDER FUNCTION /////////////////////////
+function findFolder(foldName, switcher, parent) {
+    var folder;
+    for (var i = 1; i <= proj.numItems; i++) {
+        if (proj.item(i).name == foldName && proj.item(i) instanceof FolderItem) {
+            folder = proj.item(i)
+            if (parent != undefined) {
+                folder.parentFolder = parent;
+                break;
+            } else {
+                break;
+            }
+        } else if (i == proj.numItems && switcher != undefined && switcher == true) {
+            folder = proj.items.addFolder(foldName)
+            if (parent != undefined) {
+                folder.parentFolder = parent;
+                break;
+            } else {
+                break;
+            }
+        } else if (i == proj.numItems) {
+            alert('le dossier "' + foldName + '" est absent !')
+
+
+        }
+    }
+
+    return folder;
+}
+
 
 ////////////////////////////////////////////////
 ///// FILE IMPORT SETTER
@@ -40,7 +61,41 @@ function fileImportedSet(compName, folderName) {
     fileClass = new Array;
 }
 //------------------------------------------------------
+//////////////////////////////////////////
+/// FIND COMP FUNCTION ////////////////////////////
 
+function findComp(compNom, widthComp, heightComp, timeComp, fpsComp, parent) {
+    var compItm;
+    for (var i = 1; i <= proj.numItems; i++) {
+        if (proj.item(i).name == compNom && proj.item(i) instanceof CompItem) {
+            compItm = proj.item(i);
+            break
+            // compItm.motionBlur = true;
+        } else if (i === proj.numItems && widthComp != undefined) {
+            compItm = proj.items.addComp(name, widthComp, heightComp, 1, timeComp, fpsComp);
+            if (parent != undefined) {
+                compItm.parentFolder = parent;
+                break;
+            } else {
+                break;
+            }
+        } else if (i === proj.numItems) {
+            alert('la compostion "' + compNom + '" est absente')
+        };
+    }
+
+    return compItm;
+};
+
+////////////////////////////////////////
+//// OPEN COMP
+function openComp(compName) {
+    comp = findComp(compName)
+
+    comp.openInViewer();
+
+}
+////////////////////////////////////////////////////
 
 //////////////////////
 //// FIT TO COMP
@@ -72,161 +127,8 @@ function ratioToComp(fileImported, widthComp, heightComp) {
 
 }
 
-//////////////////////////////////////////
-/// FIND COMP FUNCTION ////////////////////////////
 
-function findComp(compNom, widthComp, heightComp, timeComp, fpsComp, parent) {
-    var compItm;
-    for (var i = 1; i <= proj.numItems; i++) {
-        if (proj.item(i).name == compNom && proj.item(i) instanceof CompItem) {
-            compItm = proj.item(i);
-            break
-            // compItm.motionBlur = true;
-        } else if (i === proj.numItems && widthComp != undefined) {
-            compItm = proj.items.addComp(name, widthComp, heightComp, 1, timeComp, fpsComp);
-            if (parent != undefined) {
-                compItm.parentFolder = parent;
-                break;
-            } else {
-                break;
-            }
-        } else if (i === proj.numItems) {
-            alert('la compostion "' + compNom + '" est absente')
-        };
-    }
 
-    return compItm;
-};
-////////////////////////////////////////////////////
-
-//--- FIND FOLDER FUNCTION /////////////////////////
-function findFolder(foldName, switcher, parent) {
-    var folder;
-    for (var i = 1; i <= proj.numItems; i++) {
-        if (proj.item(i).name == foldName && proj.item(i) instanceof FolderItem) {
-            folder = proj.item(i)
-            if (parent != undefined) {
-                folder.parentFolder = parent;
-                break;
-            } else {
-                break;
-            }
-        } else if (i == proj.numItems && switcher != undefined && switcher == true) {
-            folder = proj.items.addFolder(foldName)
-            if (parent != undefined) {
-                folder.parentFolder = parent;
-                break;
-            } else {
-                break;
-            }
-        }
-    }
-
-    return folder;
-}
-///////////////////////////////////////////////
-
-/// ADD FOOTAGE IN COMP //////////////////////////////////
-
-function addFootageComp(compo, layeName, element, move) {
-    compo = compo instanceof CompItem ? compo : findComp(compo)
-    if (compo) {
-        if (compo.layers.length > 0) {
-            for (var i = 1; i <= compo.layers.length; i++) {
-                if (compo.layer(i).name == layeName) {
-                    element = compo.layer(i);
-                    if (move != undefined) {
-                        move > 1 ? move = move : move
-                        if (compo.layers.length == 1 && compo.layer(i).name == layeName) {
-                            break;
-                        } else if (element.index != compo.layers.length) {
-                            element.moveAfter(compo.layer(move));
-                        }
-                        break;
-                    } else {
-                        break;
-                    }
-                    break;
-                } else if (i == compo.layers.length) {
-                    var element = compo.layers.add(element);
-                    element.moveAfter(compo.layer(move + 1));
-                }
-            }
-        } else if (compo.layers.length == 0) {
-            compo.layers.add(element);
-        }
-
-    } else {
-        alert("La compositon " + compo.name + " n'existe pas !!");
-    }
-}
-
-////////////////////////////////////////////////////////
-////////// LAYER PARAMETERS SETTINGS
-function layerSetParam(comp, layerName, param, valeur) {
-    comp = comp instanceof CompItem ? comp : findComp(comp)
-    layeur = comp.layer(layerName) != null ? comp.layer(layerName) : null;
-
-    if (layeur != null) {
-        if (param != null) {
-            switch (param) {
-                case "scale":
-                    val = valeur != null ? valeur : 100
-
-                    if (valeur) {
-                        layeur.transform.scale.expression = val.toString();
-                    }
-                    break;
-                case "position":
-                    val = valeur != null ? valeur : [comp.width / 2, comp.height / 2]
-
-                    if (valeur) {
-                        layeur.transform.position.expression = val.toString();
-                    }
-                    break;
-                case "opacity":
-                    val = valeur != null ? valeur : 100
-
-                    if (valeur) {
-                        layeur.transform.opacity.expression = val;
-                    }
-                    break;
-
-            }
-        }
-
-    }
-
-}
-///////////////////////////////////////////////////////////////
-
-/// ADD CONTROLER FUNCTION ///////////////////////////////
-function addControler(comp, layerName, controler, nom, valeur) {
-    var effet
-    comp = comp instanceof CompItem ? comp : findComp(comp)
-    layeur = comp.layer(layerName) != null ? comp.layer(layerName) : null;
-
-    nom = nom != null ? nom : controler
-    if (layeur != null) {
-        if (layeur.effect(nom) == null) {
-            layeur.Effects.addProperty("ADBE " + controler + " Control").name = nom;
-            if (valeur != null) {
-                if (typeof valeur == "number") {
-
-                    layeur.effect(nom)(1).setValue(valeur);
-                } else if (typeof valeur == "string") {
-                    layeur.effect(nom)(1).expression = valeur;
-                }
-            }
-
-        } else if (layeur.effect(nom) != null && valeur != null) {
-            layeur.effect(nom)(1).setValue(valeur);
-        };
-        return layeur.effect(nom)(1);
-    } else {
-        alert('Le calque "' + layerName + '" est introuvable')
-    }
-}
 ///////////////////////////////////////////////////////
 ////// ADD FILE TO COMP
 
@@ -260,6 +162,51 @@ var y = (thisComp.height /2) + effect("Position Y")(1);\
 
 }
 
+////////////////////////////////////////////////////////
+////////// LAYER PARAMETERS SETTINGS
+function layerSetParam(comp, layerName, param, valeur) {
+    comp = comp instanceof CompItem ? comp : findComp(comp)
+    layeur = comp.layer(layerName) != null ? comp.layer(layerName) : null;
+
+    if (layeur != null) {
+        if (param != null) {
+            switch (param) {
+                case "scale":
+                    val = valeur != null ? valeur : 100
+
+                    if (valeur) {
+                        layeur.transform.scale.expression = val.toString();
+                    }
+                    break;
+                case "position":
+                    val = valeur != null ? valeur : [comp.width / 2, comp.height / 2]
+
+                    if (valeur) {
+                        layeur.transform.position.expression = val.toString();
+                    }
+                    break;
+                case "opacity":
+                    val = valeur != null ? valeur : 100
+
+                    if (valeur) {
+                        layeur.transform.opacity.expression = val;
+                    }
+                    break;
+                case "sourceText":
+                    val = valeur != null ? valeur : "Vide"
+
+                    if (valeur) {
+                        layeur.text.sourceText.expression = '"' + val.toString() + '"';
+                    }
+                    break;
+
+            }
+        }
+
+    }
+
+}
+
 //////////////////////////////////////////////////////////
 
 ///  DELETE LAYER FUNCTION ////////////////////////////////
@@ -290,6 +237,37 @@ function layerDeleter(compo, charLen, filter) {
         return false
     }
 }
+
+///////////////////////////////////////////////////////////////
+
+/// ADD CONTROLER FUNCTION ///////////////////////////////
+function addControler(comp, layerName, controler, nom, valeur) {
+    var effet
+    comp = comp instanceof CompItem ? comp : findComp(comp)
+    layeur = comp.layer(layerName) != null ? comp.layer(layerName) : null;
+
+    nom = nom != null ? nom : controler
+    if (layeur != null) {
+        if (layeur.effect(nom) == null) {
+            layeur.Effects.addProperty("ADBE " + controler + " Control").name = nom;
+            if (valeur != null) {
+                if (typeof valeur == "number") {
+
+                    layeur.effect(nom)(1).setValue(valeur);
+                } else if (typeof valeur == "string") {
+                    layeur.effect(nom)(1).expression = valeur;
+                }
+            }
+
+        } else if (layeur.effect(nom) != null && valeur != null) {
+            layeur.effect(nom)(1).setValue(valeur);
+        };
+        return layeur.effect(nom)(1);
+    } else {
+        alert('Le calque "' + layerName + '" est introuvable')
+    }
+}
+
 
 /// -- RENDER FUNCTION //////////////////////////
 function openXport() {
@@ -337,14 +315,6 @@ function openXport() {
 
 }
 
-////////////////////////////////////////
-//// OPEN COMP
-function openComp(compName) {
-    comp = findComp(compName)
-
-    comp.openInViewer();
-
-}
 
 /////////////////////////////////////////////////////
 ///////// ELEMENTS ////////////////////////
@@ -363,6 +333,20 @@ function dateWrite() {
     }
 
     return date
+}
+
+// // TRIM FUNCTION-////////////////////////
+function trim(str) {
+    if (str != null) {
+        return str.replace(/^\s+/, '').replace(/\s+$/, '');
+    } else {
+        return false;
+    }
+}
+////////////////
+//// COMPARE NUMBER
+function numCompare(a, b) {
+    return a >= b ? true : false
 }
 
 

@@ -1,72 +1,6 @@
 //---------------------UI -----------------------------------------
 
 function createUI(thisObj) {
-
-    var myPanel = thisObj;
-
-
-    res = "group{orientation:'column',alignChildren:['left','top'],\
-picL: IconButton{type:'image',bounds:{x:10, y:10, width:450, height:90} },\
-myTabbedPanel: Panel{type:'tabbedpanel', text:'',\
-myTab1: Panel{type:'tab', text:'PROGRAMME JOUR',\
-myDate: Panel{orientation:'row',margins:[10,10,10,10], borderStyle:'none',\
-switcher: Checkbox {text:\"Aujourd'hui\", value:true },\
-editDate: EditText {text: 'Entrer la date', enabled: false,bounds:{x:0, y:0, width:230, height:25}},\
-},\
-programField: Group{orientation: 'column', margins:[0,20,0,25], alignment:['left','fill'],\
-},\
-endBtn: Group{ alignChildren:'right', alignment:['fill','fill'],\
-btnCompOpen: Button{text:'Ouvrir',alignment:'right', margins:[0,0,0,0],bounds:{x:0, y:0, width:60, height:30}},\
-btnApply: Button{text :'Appliquer', justify:'center', bounds:{x:0, y:0, width:150, height:25}},\
-RenderBox: Group{alignChildren:['right','center'], alignment:['fill','fill'],\
-RenderBtn: Button{text:'Rendu',justify:'right',bounds:{x:100, y:0, width:120, height:30}}\
-},\
-},\
-},\
-myTab2: Panel{type:'tab', text:'TOUT DE SUITE',\
-tab2 : Group{ orientation: 'column', alignChildren: ['center', 'top'],margins:[0,30,0,0],\
-editField: Group{ margins:[0,0,0,0], alignChildren:['center','center'],\
-textStatic: StaticText{ text:'Titre'},\
-title : EditText{ text: 'Entrer le titre', bounds:{x:0, y:0, width:270, height:30}},\
-},\
-btnField: Group{ margins:[0,20,0,25],\
-},\
-endBtn: Group{ alignChildren:['center', 'center'],\
-btnCompOpen: Button{text:'Ouvrir',alignment:'right', margins:[0,0,0,0],bounds:{x:0, y:0, width:60, height:30}},\
-RenderBox: Group{alignChildren:['right','center'], alignment:['left','top'],\
-RenderBtn: Button{text:'Rendu',justify:'right',bounds:{x:100, y:0, width:120, height:30}}\
-},\
-},\
-},\
-},\
-myTab3: Panel{type:'tab', text:'ANNONCE',\
-tab3 : Group{ orientation: 'column', alignChildren: ['center', 'top'],margins:[0,15,0,0],\
-editField: Group{ margins:[0,0,0,0], alignChildren:['center','center'],\
-textStatic: StaticText{ text:'Titre'},\
-title : EditText{ text: 'Entrer le titre', bounds:{x:0, y:0, width:270, height:30}},\
-},\
-detailField: Group{ margins:[0,0,0,0], alignChildren:['center','center'],\
-textStatic: StaticText{ text:'Detail'},\
-detail : EditText{ text: 'Entrer detail', bounds:{x:0, y:0, width:270, height:30}},\
-},\
-dateField: Group{ margins:[0,10,0,10],\
-staticDate: StaticText {text: 'Date'},\
-editDate: EditText {text: 'Entrer la date', bounds:{x:0, y:0, width:180, height:25}},\
-},\
-btnField: Group{ margins:[0,0,0,10],\
-},\
-endBtn: Group{ alignChildren:['center', 'center'],\
-btnCompOpen: Button{text:'Ouvrir',alignment:'right', margins:[0,0,0,0],bounds:{x:0, y:0, width:60, height:30}},\
-RenderBox: Group{alignChildren:['right','center'], alignment:['left','top'],\
-RenderBtn: Button{text:'Rendu',justify:'right',bounds:{x:100, y:0, width:120, height:30}}\
-},\
-},\
-},\
-},\
-myTab4: Panel{type:'tab', text:'SPORT',\
-},\
-},\
-}";
     //var sourcePic = File('./AvantApres/splash/splash.jpg');
     var myPic = new File('./3-Controller/3Core');
     var myBin;
@@ -78,18 +12,145 @@ myTab4: Panel{type:'tab', text:'SPORT',\
     var add_pic = File('./3-Controller/map/add_btn.jpg');
     var minus_pic = File('./3-Controller/map/trash.jpg');
     var add_image = File('./3-Controller/map/add_image.jpg');
-    //myPanel.grp.icon.image = myBin;
 
-    //myPanel.size = [660, 72];
 
-    //var pic = myPanel.add("image", {x:10, y:10, width:360, height:72}, myBin);
+    var pal = (thisObj instanceof Panel) ? thisObj : new Window("palette", scriptName, ["", "", 300, 600], {
+        resizeable: true
+    });
+    pal.orientation = "column"
+    pal.alignChildren = ['center', 'top']
 
-    myPanel.grp = myPanel.add(res);
-    myPanel.grp.picL.image = myBin;
-    myPanel.grp.maximunSize = myPanel.grp.size;
 
-    var maingroup1 = myPanel.grp.myTabbedPanel.myTab1.programField;
-    var maingroup2 = myPanel.grp.myTabbedPanel.myTab2;
+    pal.picL = pal.add('iconButton', ["", "", 450, 90], myPic, {
+        style: "toolbutton"
+    })
+    pal.myTabbedPanel = pal.add('tabbedpanel')
+    pal.myTabbedPanel.preferredSize = [450, 300]
+
+    var tab1 = pal.myTabbedPanel.add('tab', undefined, 'PROGRAMME JOUR')
+    tab1.myDate = tab1.add("panel")
+    tab1.myDate.orientation = 'column'
+    tab1.myDate.margins = [10, 20, 10, 10]
+    tab1.myDate.contain = tab1.myDate.add('group')
+    tab1.myDate.contain.orientation = 'row'
+    tab1.myDate.contain.alignment = ['left', 'center']
+    tab1.myDate.contain.section1 = tab1.myDate.contain.add('group')
+    tab1.myDate.contain.section1.switcher = tab1.myDate.contain.section1.add('checkbox', undefined, "Aujourd'hui")
+    tab1.myDate.contain.section1.switcher.value = true
+    tab1.myDate.contain.section2 = tab1.myDate.contain.add('group')
+    tab1.myDate.contain.section2.editDate = tab1.myDate.contain.section2.add('edittext', [0, 0, 230, 25], "Entrer la date")
+    tab1.myDate.contain.section2.editDate.enabled = false
+    tab1.myDate.slide = tab1.myDate.add('group')
+    tab1.myDate.slide.margins = [0, 15, 0, 0]
+    tab1.myDate.slide.globalScale = tab1.myDate.slide.add('slider{minvalue:0, maxvalue:100, value:100}')
+    tab1.myDate.slide.dateSpacement = tab1.myDate.slide.add('slider{minvalue:-100, maxvalue:100, value:0}')
+    tab1.myDate.slide.aujourduiScale = tab1.myDate.slide.add('slider{minvalue:0, maxvalue:100, value:100}')
+    tab1.myDate.slide.aujourduiPosy = tab1.myDate.slide.add('slider{minvalue:-100, maxvalue:100, value:0}')
+
+    tab1.programField = tab1.add('group')
+    tab1.programField.orientation = 'column'
+    tab1.programField.alignment = ['left', 'fill']
+    tab1.programField.margins = [0, 20, 0, 25]
+
+    tab1.endBtn = tab1.add('group')
+    tab1.endBtn.alignment = ['fill', 'fill']
+    tab1.endBtn.alignChildren = 'right'
+    tab1.endBtn.btnCompOpen = tab1.endBtn.add('button', [0, 0, 60, 30], 'Ouvrir')
+    tab1.endBtn.btnCompOpen.margins = [0, 0, 0, 0]
+    tab1.endBtn.btnCompOpen.alignment = 'right'
+    tab1.endBtn.btnApply = tab1.endBtn.add('button', [0, 0, 150, 25], 'Appliquer')
+    tab1.endBtn.btnApply.justify = 'center'
+    tab1.endBtn.renderBox = tab1.endBtn.add('group')
+    tab1.endBtn.renderBox.alignChildren = ['right', 'center']
+    tab1.endBtn.renderBox.alignment = ['fill', 'fill']
+    tab1.endBtn.renderBox.renderBtn = tab1.endBtn.renderBox.add('button', [0, 0, 120, 30], 'Rendu')
+    tab1.endBtn.renderBox.renderBtn.justify = 'right'
+
+
+
+    var tab2 = pal.myTabbedPanel.add('tab', undefined, 'TOUT DE SUITE')
+    tab2.grp = tab2.add('group')
+    tab2.grp.orientation = 'column'
+    tab2.grp.alignChildren = ['center', 'top']
+    // tab2.grp.margins = [50, 0, 0, 0]
+
+    tab2.grp.editField = tab2.grp.add('group')
+    tab2.grp.margins = [0, 30, 0, 0]
+    tab2.grp.alignChildren = ['center', 'center']
+    tab2.grp.editField.textStatic = tab2.grp.editField.add('statictext', undefined, 'Titre')
+    tab2.grp.editField.title = tab2.grp.editField.add('edittext', ["", "", 270, 30], "Entrer le titre")
+
+    tab2.grp.btnField = tab2.grp.add("group")
+    tab2.grp.btnField.margins = [0, 20, 0, 25]
+
+    tab2.grp.endBtn = tab2.grp.add('group')
+    tab2.grp.endBtn.margins = [0, 40, 0, 0]
+    tab2.grp.endBtn.alignment = ['fill', 'fill']
+    tab2.grp.endBtn.alignChildren = 'right'
+    tab2.grp.endBtn.btnCompOpen = tab2.grp.endBtn.add('button', [0, 0, 60, 30], 'Ouvrir')
+    tab2.grp.endBtn.btnCompOpen.alignment = 'right'
+    tab2.grp.endBtn.btnCompOpen.margins = [0, 0, 0, 0]
+    tab2.grp.endBtn.renderBox = tab2.grp.endBtn.add('group')
+    tab2.grp.endBtn.renderBox.alignChildren = ['right', 'center']
+    tab2.grp.endBtn.renderBox.alignment = ['right', 'top']
+    tab2.grp.endBtn.renderBox.renderBtn = tab2.grp.endBtn.renderBox.add('button', [0, 0, 120, 30], 'Rendu')
+    tab2.grp.endBtn.renderBox.renderBtn.justify = 'right'
+
+
+
+    var tab3 = pal.myTabbedPanel.add('tab', ["", "", 450, 600], 'ANNONCE')
+    tab3.grp = tab3.add('group')
+    tab3.grp.orientation = 'column'
+    tab3.grp.margins = [0, 30, 0, 0]
+    tab3.grp.alignChildren = ['center', 'top']
+
+    tab3.grp.editField = tab3.grp.add('group')
+    tab3.grp.editField.margins = [0, 0, 0, 0]
+    tab3.grp.editField.alignChildren = ['center', 'center']
+    tab3.grp.editField.textStatic = tab3.grp.editField.add('statictext', undefined, 'Titre')
+    tab3.grp.editField.title = tab3.grp.editField.add('edittext', ["", "", 270, 30], "Entrer le titre")
+
+    tab3.grp.detailField = tab3.grp.add('group')
+    tab3.grp.detailField.margins = [0, 0, 0, 0]
+    tab3.grp.detailField.alignChildren = ['center', 'center']
+    tab3.grp.detailField.textStatic = tab3.grp.detailField.add('statictext', undefined, 'Detail')
+    tab3.grp.detailField.title = tab3.grp.detailField.add('edittext', ["", "", 270, 30], "Entrer detail")
+
+    tab3.grp.dateField = tab3.grp.add('group')
+    tab3.grp.dateField.margins = [0, 10, 0, 10]
+    tab3.grp.dateField.alignChildren = ['center', 'center']
+    tab3.grp.dateField.textStatic = tab3.grp.dateField.add('statictext', undefined, 'Date')
+    tab3.grp.dateField.title = tab3.grp.dateField.add('edittext', ["", "", 180, 30], "Entrer la date")
+
+    tab3.grp.btnField = tab3.grp.add("group")
+    tab3.grp.btnField.margins = [0, 0, 0, 10]
+
+    tab3.grp.endBtn = tab3.grp.add('group')
+    tab3.grp.endBtn.margins = [0, 40, 0, 0]
+    tab3.grp.endBtn.alignChildren = ['fill', 'fill']
+    tab3.grp.endBtn.btnCompOpen = tab3.grp.endBtn.add('button', [0, 0, 60, 30], 'Ouvrir')
+    tab3.grp.endBtn.btnCompOpen.alignment = 'left'
+    tab3.grp.endBtn.btnCompOpen.margins = [0, 0, 0, 0]
+    tab3.grp.endBtn.renderBox = tab3.grp.endBtn.add('group')
+    tab3.grp.endBtn.renderBox.alignChildren = ['right', 'center']
+    tab3.grp.endBtn.renderBox.alignment = ['right', 'top']
+    tab3.grp.endBtn.renderBox.renderBtn = tab3.grp.endBtn.renderBox.add('button', [0, 0, 120, 30], 'Rendu')
+    tab3.grp.endBtn.renderBox.renderBtn.justify = 'right'
+
+
+    var tab4 = pal.myTabbedPanel.add('tab', undefined, 'SPORT')
+
+    //////////////////////////////////////////////////////
+
+    //pal.grp.icon.image = myBin;
+
+    //pal.size = [660, 72];
+
+    //var pic = pal.add("image", {x:10, y:10, width:360, height:72}, myBin);
+
+
+    var maingroup1 = tab1.programField;
+    var maingroup2 = tab2;
 
     add_element()
 
@@ -100,9 +161,9 @@ myTab4: Panel{type:'tab', text:'SPORT',\
     }
 
     function add_element() {
-        var group = myPanel.grp.myTabbedPanel
-        var btnField2 = group.myTab2.tab2.btnField
-        var btnField3 = group.myTab3.tab3.btnField
+        var group = pal.myTabbedPanel
+        var btnField2 = tab2.grp.btnField
+        var btnField3 = tab3.grp.btnField
         /// TAB 2
         btnField2.ipImage = btnField2.add('iconbutton', undefined, add_image, {
             style: 'toolbutton'
@@ -112,10 +173,11 @@ myTab4: Panel{type:'tab', text:'SPORT',\
         btnField2.direct = btnField2.add('checkbox', undefined, "Direct");
         btnField2.direct.value = true
         //// TAB 3
-        group.myTab3.tab3.dateField.heure = group.myTab3.tab3.dateField.add("edittext", ["", "", 35, 23], "12");
-        group.myTab3.tab3.dateField.heure.onChanging = takeWord;
-        group.myTab3.tab3.dateField.minute = group.myTab3.tab3.dateField.add("edittext", ["", "", 35, 23], "00");
-        group.myTab3.tab3.dateField.minute.onChanging = takeWord;
+
+        tab3.grp.dateField.heure = tab3.grp.dateField.add("edittext", ["", "", 35, 23], "12");
+        // group.myTab3.tab3.dateField.heure.onChanging = takeWord;
+        tab3.grp.dateField.minute = tab3.grp.dateField.add("edittext", ["", "", 35, 23], "00");
+        // group.myTab3.tab3.dateField.minute.onChanging = takeWord;
         btnField3.ipImage = btnField3.add('iconbutton', undefined, add_image, {
             style: 'toolbutton'
         });
@@ -129,51 +191,76 @@ myTab4: Panel{type:'tab', text:'SPORT',\
 
     add_row(maingroup1);
 
-    var month = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"]
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = month[today.getMonth()]
 
-
-    today = dd + ' ' + mm
-
-
-    function date_row() {
-        var group = myPanel.grp.myTabbedPanel.myTab1.myDate
-        group.today = group.add("checkbox", undefined, "Aujourd'hui");
-        group.today.value = true
-        // group.today.value.onChanging = custom_date
-        myPanel.layout.layout(true);
-
-    }
-
-    // myPanel.grp.myTabbedPanel.myTab1.myDate.today.addEventListener("click", function() {
+    // pal.grp.myTabbedPanel.myTab1.myDate.today.addEventListener("click", function() {
     //     alert("Houdini")
-    //     if (myPanel.grp.myTabbedPanel.myTab1.myDate.today.value == true) {
+    //     if (pal.grp.myTabbedPanel.myTab1.myDate.today.value == true) {
     //         custom_date()
     //     }
     // });
-    myPanel.grp.myTabbedPanel.myTab1.myDate.switcher.onClick = custom_date
+    tab1.myDate.contain.section1.switcher.onClick = custom_date
 
 
     function custom_date() {
-        var group = myPanel.grp.myTabbedPanel.myTab1.myDate
+        var group = tab1.myDate
 
-        if (group.switcher.value == false) {
+        if (group.contain.section1.switcher.value == false) {
             // group.editDate = group.add("edittext", ["", "", 230, 23], "Entrer la date");
             // group.editDate.onChanging = writter;
             // group.remove(this.parent.children[1])
-            group.editDate.enabled = true
-            myPanel.layout.layout(true);
+            group.contain.section2.editDate.enabled = true
+            layerDateCustom()
+            pal.layout.layout(true);
         } else {
             // group.remove(this.parent.children[1])
-            group.editDate.enabled = false
-            myPanel.layout.layout(true);
+            group.contain.section2.editDate.enabled = false
+            layerDate()
+            pal.layout.layout(true);
         }
 
     }
+    //////////////////////////////////////////
+    ////// PROG ROW EDIT COMP FUNCTION
+
+    function progRowEdit() {
+
+        var index = this.parent.parent.parent.index
+        alert(index)
+    }
+
+    ///////////////////////////////////
+
+    //// PROGRAMME COMP FUNCTION
+    var progJourComp = findComp("PROGRAMME JOUR");
 
 
+    function layerDateCustom() {
+        // alert(trim(this.text))
+        var tabText = tab1.myDate.contain.section2.editDate.text
+        var text = this.text ? trim(this.text).split(' ') : (tabText == "Entrer la date" || tabText == "" ? "14 Avril".split(' ') : trim(tabText).split(' '))
+        var day = text[0]
+        var month = text[1]
+
+        layerSetParam(progJourComp, 'Day', 'sourceText', day)
+        layerSetParam(progJourComp, 'Month', 'sourceText', month)
+    }
+
+    layerDate()
+
+    function layerDate() {
+        // alert(trim(this.text))
+
+        var day = dateWrite()['day']
+        var month = dateWrite()['month']
+
+
+        layerSetParam(progJourComp, 'Day', 'sourceText', day)
+        layerSetParam(progJourComp, 'Month', 'sourceText', month)
+    }
+
+
+    ///// ADD ROW PROGRAMME TAB
+    /////////////////////
     function add_row(maingroup1) {
         var group = maingroup1.add("group");
         group.alignChildren = "top"
@@ -192,21 +279,21 @@ myTab4: Panel{type:'tab', text:'SPORT',\
         group.n1.n2_tx.orientation = "column";
         group.n1.n2_tx.margins = [0, 0, 0, 0]
         group.n1.n2_tx.title = group.n1.n2_tx.add("edittext", ["", "", 250, 27], "Titre");
-        group.n1.n2_tx.title.onChanging = takeWord;
+        group.n1.n2_tx.title.onChanging = progRowEdit;
         group.n1.n2_tx.detail = group.n1.n2_tx.add("edittext", ["", "", 250, 27], "Detail");
-        group.n1.n2_tx.detail.onChanging = takeWord;
+        group.n1.n2_tx.detail.onChanging = writter;
         //------ N3
         group.n1.n2_tx.n3 = group.n1.n2_tx.add('group', [0, "", 230, 23]);
         group.n1.n2_tx.n3.alignChildren = ['fill', 'center']
         group.n1.n2_tx.n3.heure = group.n1.n2_tx.n3.add("edittext", ["", "", 35, 23], "12");
-        group.n1.n2_tx.n3.heure.onChanging = takeWord;
+        group.n1.n2_tx.n3.heure.onChanging = writter;
         group.n1.n2_tx.n3.minute = group.n1.n2_tx.n3.add("edittext", ["", "", 35, 23], "00");
-        group.n1.n2_tx.n3.minute.onChanging = takeWord;
+        group.n1.n2_tx.n3.minute.onChanging = writter;
         group.n1.n2_tx.n3.list = group.n1.n2_tx.n3.add("dropdownlist", ["", "", 100, 23], ["Sport", "Music"]);
         group.n1.n2_tx.n3.list.selection = 0
-        group.n1.n2_tx.n3.list.onChanging = takeWord;
+        group.n1.n2_tx.n3.list.onChanging = writter;
         group.n1.n2_tx.n3.direct = group.n1.n2_tx.n3.add("checkbox", ["", "", 50, 23], "Direct");
-        group.n1.n2_tx.n3.direct.onChanging = takeWord;
+        group.n1.n2_tx.n3.direct.onChanging = writter;
         ///// N1 -> N2_IMG
         group.n1.n2_img = group.n1.add("group")
         group.n1.n2_img.orientation = "column";
@@ -221,7 +308,7 @@ myTab4: Panel{type:'tab', text:'SPORT',\
         });
         group.minus.onClick = minus_btn;
         group.index = maingroup1.children.length - 1;
-        myPanel.layout.layout(true);
+        pal.layout.layout(true);
     }
 
     function add_btn() {
@@ -234,64 +321,43 @@ myTab4: Panel{type:'tab', text:'SPORT',\
         if (this.parent.parent.children.length > 1) {
             // this.parent.edit.text = "";
             maingroup1.remove(this.parent);
-            myPanel.layout.layout(true);
+            pal.layout.layout(true);
         } else {
             // this.parent.edit.text = "";
             return false;
         }
     }
 
+    //--------------TAB 1 ---------------
 
-    myPanel.grp.myTabbedPanel.margins = [0, 10, 5, 10];
-    myPanel.grp.myTabbedPanel.myTab1.margins = [10, 20, 0, 5];
-    myPanel.grp.myTabbedPanel.myTab1.endBtn.margins = [17, 0, 0, 0];
-    myPanel.grp.myTabbedPanel.myTab1.endBtn.RenderBox.margins = [60, 0, 0, 0];
+    pal.myTabbedPanel.margins = [0, 10, 5, 10];
+    tab1.margins = [10, 20, 0, 5];
+    tab1.endBtn.margins = [17, 0, 0, 0];
+    tab1.endBtn.renderBox.margins = [60, 0, 0, 0];
 
     //Defaults
-    // myPanel.grp.myTabbedPanel.myTab1.myDate.today.value.onChanging = custom_date;
-    // myPanel.grp.myTabbedPanel.myTab1.myDate.editDate.onChanging = writter;
-    myPanel.grp.myTabbedPanel.myTab1.endBtn.btnApply.onClick = readTxt;
+    // pal.grp.myTabbedPanel.myTab1.myDate.today.value.onChanging = custom_date;
+    tab1.myDate.contain.section2.editDate.onChanging = layerDateCustom;
+    tab1.endBtn.btnApply.onClick = readTxt;
 
-    // myPanel.grp.myTabbedPanel.myTab1.programField.picInvite.btnApres.onClick = toFileImport;
-    myPanel.grp.myTabbedPanel.myTab1.endBtn.btnCompOpen.onClick = openXport;
-    myPanel.grp.myTabbedPanel.myTab1.endBtn.RenderBox.RenderBtn.onClick = openXport;
+    // pal.grp.myTabbedPanel.myTab1.programField.picInvite.btnApres.onClick = toFileImport;
+    tab1.endBtn.btnCompOpen.onClick = openXport;
+    tab1.endBtn.renderBox.renderBtn.onClick = openXport;
 
     //--------------TAB 2 ---------------
-    // myPanel.grp.myTabbedPanel.myTab2.imageInvite.margins = [15, 10, 0, 20];
-    // myPanel.grp.myTabbedPanel.myTab2.endBtn.margins = [17, 0, 0, 0];
-    // myPanel.grp.myTabbedPanel.myTab2.endBtn.RenderBox.margins = [60, 0, 0, 0];
-
-    //Defaults
-    // myPanel.grp.myTabbedPanel.myTab2.myText.editName.onChanging = writter;
-    // myPanel.grp.myTabbedPanel.myTab2.btnApply.onClick = readTxt;
-
-    // myPanel.grp.myTabbedPanel.myTab2.imageInvite.picInvite.btnAvant.onClick = compName;
-    // myPanel.grp.myTabbedPanel.myTab2.imageInvite.picInvite.btnApres.onClick = compName;
-
-    //myPanel.grp.myTabbedPanel.myTab1.enBtn.picInvite.btnApres.onClick = compName;
-    // myPanel.grp.myTabbedPanel.myTab2.endBtn.btnCompOpen.onClick = openXport;
-    // myPanel.grp.myTabbedPanel.myTab2.endBtn.btnComp.onClick = openXport;
-    // myPanel.grp.myTabbedPanel.myTab2.endBtn.RenderBox.RenderBtn.onClick = openXport;
 
 
     //--------------TAB 3 ---------------
-    // myPanel.grp.myTabbedPanel.myTab3.SetGrp.widthUI.widthTxt.onChanging = setwriteA;
-    // myPanel.grp.myTabbedPanel.myTab3.SetGrp.heightUI.heightTxt.onChanging = setwriteB;
-    // myPanel.grp.myTabbedPanel.myTab3.SetGrp.fpsUI.fpsTxt.onChanging = setwriteC;
-    // myPanel.grp.myTabbedPanel.myTab3.SetGrp.timeCompUI.timeCompTxt.onChanging = setwriteD;
 
-    //--------------TAB 4 ---------------
-    // myPanel.grp.myTabbedPanel.myTab4.SetGrp.widthUI.widthTxt.onChanging = setwriteA;
-    // myPanel.grp.myTabbedPanel.myTab4.SetGrp.heightUI.heightTxt.onChanging = setwriteB;
-    // myPanel.grp.myTabbedPanel.myTab4.SetGrp.fpsUI.fpsTxt.onChanging = setwriteC;
-    // myPanel.grp.myTabbedPanel.myTab4.SetGrp.timeCompUI.timeCompTxt.onChanging = setwriteD;
 
-    myPanel.layout.layout(true);
+    pal.layout.layout(true);
 
-    return myPanel;
+    return pal;
 
 }
-createUI(this);
+
+var w = createUI(this);
+w instanceof Window ? w.show() : w.layout.layout(true)
 
 
 
